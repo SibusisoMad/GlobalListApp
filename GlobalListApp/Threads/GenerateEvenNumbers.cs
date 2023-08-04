@@ -6,43 +6,27 @@ using System.Threading.Tasks;
 
 namespace GlobalListApp.Threads
 {
-    public class GeneratePrimeNumbers
+    public class GenerateEvenNumbers
     {
+
         public static void Run()
         {
-            int number = 2;
+            int number = 1;
 
             while(!Program.stopThreads)
             {
-                lock (Program.lockObject)
+                lock(Program.lockObject)
                 {
-                    if(IsPrime(number))
+                    if(number % 2 != 0)
+
                     {
                         Program.globalList.Add(number);
                         Program.totalCount++;
                     }
 
                     number++;
-
-                }
-
-            }
-        }
-
-        private static bool IsPrime(int number)
-        {
-            if(number < 2)
-                return false;
-
-            for(int i = 2; i <= Math.Sqrt(number); i++)
-            {
-                if(number % i == 0)
-                {
-                    return false;
                 }
             }
-
-            return true;
         }
     }
 }

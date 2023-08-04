@@ -12,16 +12,21 @@ namespace GlobalListApp.Threads
         public static object lockObject = new object();
         public static bool stopThreads = false;
 
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            
-            Thread primeThread = new Thread(GeneratePrimeNumbers.Run);
-            primeThread.Start();
+            Thread oddNumberThread = new Thread(GenerateOddNumbers.Run);
+            Thread primeNumberThread = new Thread(GeneratePrimeNumbers.Run);
+            Thread evenNumberThread = new Thread(GenerateEvenNumbers.Run);
+
+            oddNumberThread.Start();
+            primeNumberThread.Start();
 
             while (globalList.Count < 250000)
             {
                 Thread.Sleep(100);
             }
+
+            evenNumberThread.Start();
 
             while (totalCount < 1000000)
             {
@@ -30,7 +35,9 @@ namespace GlobalListApp.Threads
 
             stopThreads = true;
 
-            primeThread.Join();
+            oddNumberThread.Join();
+            primeNumberThread.Join();
+            evenNumberThread.Join();
 
             List<int> sortedList = globalList.OrderBy(num => num).ToList();
             int oddCount = sortedList.Count(num => num % 2 != 0);
