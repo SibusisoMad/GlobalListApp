@@ -4,11 +4,11 @@ using System.Xml.Serialization;
 
 namespace GlobalListUtility.Serialization
 {
-    public static class Serializer
+    public class Serializer
     {
-        public static void SerializeToBinary(List<int> list, string fileName)
+        public static void SerializeToBinary(List<int> list, string filePath)
         {
-            using (FileStream fileStream = new FileStream(fileName, FileMode.Create))
+            using (FileStream fileStream = new FileStream(filePath, FileMode.Create))
             {
                 using (BinaryWriter writer = new BinaryWriter(fileStream))
                 {
@@ -20,13 +20,12 @@ namespace GlobalListUtility.Serialization
             }
         }
 
-        public static void SerializeToXml(List<int> list, string fileName)
+        public static void SerializeToXml<T>(T data, string filePath)
         {
-            using (StreamWriter writer = new StreamWriter(fileName))
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            using (TextWriter writer = new StreamWriter(filePath))
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(List<int>));
-
-                serializer.Serialize(writer, list);
+                serializer.Serialize(writer, data);
             }
         }
     }
